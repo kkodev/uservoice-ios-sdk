@@ -71,7 +71,7 @@
     cell.imageView.image = [UIImage imageNamed:@"uv_article.png"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.numberOfLines = 2;
-    cell.textLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
 }
 
 - (void)initCellForFlash:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
@@ -109,6 +109,10 @@
     }
 
     return [self createCellForIdentifier:identifier tableView:theTableView indexPath:indexPath style:UITableViewCellStyleDefault selectable:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44.0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView {
@@ -178,7 +182,7 @@
     else if ([UVSession currentSession].config.topicId)
         return [((UVHelpTopic *)[[UVSession currentSession].topics objectAtIndex:0]) name];
     else
-        return NSLocalizedStringFromTable(@"Knowledge Base", @"UserVoice", nil);
+        return NSLocalizedStringFromTable(@"FAQ", @"UserVoice", nil);
 }
 
 - (void)postIdeaTapped {
@@ -249,7 +253,7 @@
 }
 
 - (void)updateLayoutAnimated:(BOOL)animated {
-    CGFloat searchY = [UVSession currentSession].config.showKnowledgeBase ? (searchController.active && searchController.searchBar.showsScopeBar ? 80 : 44) : 0;
+    CGFloat searchY = 0;
     BOOL hasButtons = [UVSession currentSession].config.showContactUs || [UVSession currentSession].config.showPostIdea;
     
     void (^update)() = ^{
@@ -293,22 +297,22 @@
     scrollView.backgroundColor = [UIColor colorWithRed:0.94f green:0.95f blue:0.95f alpha:1.0f];
     scrollView.alwaysBounceVertical = YES;
 
-    if ([UVSession currentSession].config.showKnowledgeBase) {
-        UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)] autorelease];
-        searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        searchBar.placeholder = NSLocalizedStringFromTable(@"Search", @"UserVoice", nil);
-        searchBar.delegate = self;
-        searchBar.showsScopeBar = NO;
-        if ([UVSession currentSession].config.showForum) {
-            searchBar.scopeButtonTitles = @[NSLocalizedStringFromTable(@"All", @"UserVoice", nil), NSLocalizedStringFromTable(@"Articles", @"UserVoice", nil), NSLocalizedStringFromTable(@"Ideas", @"UserVoice", nil)];
-        }
-        [self.view addSubview:searchBar];
-
-        self.searchController = [[[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
-        searchController.delegate = self;
-        searchController.searchResultsDelegate = self;
-        searchController.searchResultsDataSource = self;
-    }
+//    if ([UVSession currentSession].config.showKnowledgeBase) {
+//        UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)] autorelease];
+//        searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//        searchBar.placeholder = NSLocalizedStringFromTable(@"Search", @"UserVoice", nil);
+//        searchBar.delegate = self;
+//        searchBar.showsScopeBar = NO;
+//        if ([UVSession currentSession].config.showForum) {
+//            searchBar.scopeButtonTitles = @[NSLocalizedStringFromTable(@"All", @"UserVoice", nil), NSLocalizedStringFromTable(@"Articles", @"UserVoice", nil), NSLocalizedStringFromTable(@"Ideas", @"UserVoice", nil)];
+//        }
+//        [self.view addSubview:searchBar];
+//
+//        self.searchController = [[[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
+//        searchController.delegate = self;
+//        searchController.searchResultsDelegate = self;
+//        searchController.searchResultsDataSource = self;
+//    }
 
     self.flashView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollView.bounds.size.width, 100)] autorelease];
     flashView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -325,7 +329,7 @@
     flashMessageLabel.textColor = [UIColor colorWithRed:0.41f green:0.42f blue:0.43f alpha:1.0f];
     flashMessageLabel.font = [UIFont systemFontOfSize:14];
     [flashView addSubview:flashMessageLabel];
-    self.flashTable = [[[UITableView alloc] initWithFrame:CGRectMake(0, IPAD ? 50 : 70, flashView.bounds.size.width, 40) style:UITableViewStyleGrouped] autorelease];
+    self.flashTable = [[[UITableView alloc] initWithFrame:CGRectMake(0, 0, flashView.bounds.size.width, 40) style:UITableViewStyleGrouped] autorelease];
     flashTable.delegate = self;
     flashTable.dataSource = self;
     flashTable.backgroundView = nil;
@@ -358,32 +362,6 @@
     self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:tableView];
-
-    if (![UVSession currentSession].clientConfig.whiteLabel) {
-        UIView *footer = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 50)] autorelease];
-        footer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        UIView *logo = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-        UILabel *poweredBy = [[[UILabel alloc] initWithFrame:CGRectMake(0, 6, 0, 0)] autorelease];
-        // tweak for retina
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
-            poweredBy.frame = CGRectMake(0, 8, 0, 0);
-        poweredBy.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        poweredBy.backgroundColor = [UIColor clearColor];
-        poweredBy.textColor = [UIColor grayColor];
-        poweredBy.font = [UIFont systemFontOfSize:11];
-        poweredBy.text = NSLocalizedStringFromTable(@"powered by", @"UserVoice", nil);
-        [poweredBy sizeToFit];
-        [logo addSubview:poweredBy];
-        UIImageView *image = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"uv_logo.png"]] autorelease];
-        image.frame = CGRectMake(poweredBy.bounds.size.width + 7, 0, image.bounds.size.width * 0.8, image.bounds.size.height * 0.8);
-        [logo addSubview:image];
-        logo.frame = CGRectMake(0, 0, image.frame.origin.x + image.frame.size.width, image.frame.size.height);
-        logo.center = CGPointMake(footer.bounds.size.width / 2, footer.bounds.size.height - logo.bounds.size.height / 2 - 15);
-        logo.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
-        [logo addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(logoTapped)] autorelease]];
-        [footer addSubview:logo];
-        tableView.tableFooterView = footer;
-    }
 
     [tableView reloadData];
     [self updateLayout];

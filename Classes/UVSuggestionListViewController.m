@@ -274,22 +274,22 @@
     theTableView.tableFooterView = footer;
     theTableView.separatorColor = [UVStyleSheet bottomSeparatorColor];
 
-    NSInteger headerHeight = 44;
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, headerHeight)];
-    headerView.backgroundColor = [UIColor clearColor];
-
-    UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, screenWidth, headerHeight)] autorelease];
-    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"Search", @"UserVoice", nil), _forum.name];
-    searchBar.delegate = self;
-    [headerView addSubview:searchBar];
-
-    self.searchController = [[[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
-    searchController.delegate = self;
-    searchController.searchResultsDataSource = self;
-    searchController.searchResultsDelegate = self;
-    theTableView.tableHeaderView = headerView;
-    [headerView release];
+//    NSInteger headerHeight = 44;
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, headerHeight)];
+//    headerView.backgroundColor = [UIColor clearColor];
+//
+//    UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, screenWidth, headerHeight)] autorelease];
+//    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    searchBar.placeholder = [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"Search", @"UserVoice", nil), _forum.name];
+//    searchBar.delegate = self;
+//    [headerView addSubview:searchBar];
+//
+//    self.searchController = [[[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
+//    searchController.delegate = self;
+//    searchController.searchResultsDataSource = self;
+//    searchController.searchResultsDelegate = self;
+//    theTableView.tableHeaderView = headerView;
+//    [headerView release];
 
     self.tableView = theTableView;
     [theTableView release];

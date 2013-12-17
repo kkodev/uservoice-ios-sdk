@@ -55,7 +55,7 @@
     CGRect appFrame = [UIScreen mainScreen].applicationFrame;
     CGFloat yStart = barFrame.origin.y + barFrame.size.height;
     
-    return CGRectMake(0, yStart, appFrame.size.width, appFrame.size.height - barFrame.size.height);
+    return CGRectMake(0, 0, appFrame.size.width, appFrame.size.height - barFrame.size.height);
 }
 
 - (void)showActivityIndicator {
