@@ -254,7 +254,7 @@
     [super loadView];
 
     [UVBabayaga track:VIEW_FORUM id:_forum.forumId];
-    self.navigationItem.title = NSLocalizedStringFromTable(@"Feedback Forum", @"UserVoice", nil);
+    self.navigationItem.title = NSLocalizedStringFromTable(@"Ideas", @"UserVoice", nil);
 
     self.view = [[[UIView alloc] initWithFrame:[self contentFrame]] autorelease];
     self.view.autoresizesSubviews = YES;

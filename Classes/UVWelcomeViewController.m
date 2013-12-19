@@ -49,7 +49,7 @@
 
 - (void)customizeCellForForum:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor whiteColor];
-    cell.textLabel.text = NSLocalizedStringFromTable(@"Feedback Forum", @"UserVoice", nil);
+    cell.textLabel.text = NSLocalizedStringFromTable(@"Ideas", @"UserVoice", nil);
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
