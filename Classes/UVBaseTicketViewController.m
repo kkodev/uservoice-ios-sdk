@@ -44,9 +44,16 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.selectedCustomFieldValues = [NSMutableDictionary dictionaryWithDictionary:[UVSession currentSession].config.customFields];
+        
+        UVSession *session = [UVSession currentSession];
+        
+        self.selectedCustomFieldValues = [NSMutableDictionary dictionaryWithDictionary:session.config.customFields];
         self.articleHelpfulPrompt = NSLocalizedStringFromTable(@"Do you still want to contact us?", @"UserVoice", nil);
         self.articleReturnMessage = NSLocalizedStringFromTable(@"Yes, go to my message", @"UserVoice", nil);
+        
+        UVUser *user = session.user;
+        self.userEmail = user.email;
+        self.userName = user.name;
     }
     return self;
 }
